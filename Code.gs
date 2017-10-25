@@ -1,6 +1,7 @@
 var ADDON_TITLE = 'GIFT form creator';
 var documentProperties = PropertiesService.getDocumentProperties();
 var form = FormApp.getActiveForm();
+var giftCode = "True or false?{T}";
 /**
  * Adds a custom menu to the active form to show the add-on sidebar.
  *
@@ -9,13 +10,12 @@ var form = FormApp.getActiveForm();
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
-  gift_code = documentProperties.getProperty(form.getId()); 
-  showSidebar(gift_code);
+//  var authInfo = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
   form.setIsQuiz(true);
-//  FormApp.getUi()
-//      .createAddonMenu()
-//      .addItem('Configure GIFT', 'showSidebar')
-//      .addToUi();
+  FormApp.getUi()
+      .createAddonMenu()
+      .addItem('Configure GIFT', 'showSidebar')
+      .addToUi();
 }
 
 /**
@@ -36,17 +36,12 @@ function onInstall(e) {
  * configuring the notifications this add-on will produce.
  */
 function showSidebar() {
-  //var question = "You can use your pencil and paper for these next questions. True or false?{T}"
-  //Logger.log(parser.parse(question));
-
-  //Logger.log(parser.parse(question));
+  giftCode = documentProperties.getProperty(form.getId());
+  if(!giftCode) {
+    giftCode = "True or false?{T}";
+  }
   var html = HtmlService.createTemplateFromFile('Sidebar');
-      //.setSandboxMode(HtmlService.SandboxMode.IFRAME)
-      //.setTitle('GIFT form creator');
-  html.gift_code= gift_code;
-  var htmlOutput = html.evaluate();
+  html.giftCode = giftCode;
+  var htmlOutput = html.evaluate().setTitle(ADDON_TITLE);
   FormApp.getUi().showSidebar(htmlOutput);
 }
-
-
-

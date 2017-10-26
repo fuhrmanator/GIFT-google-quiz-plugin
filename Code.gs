@@ -1,4 +1,4 @@
-var ADDON_TITLE = 'GIFT form creator';
+var ADDON_TITLE = 'Gift Quiz Editor';
 var documentProperties = PropertiesService.getDocumentProperties();
 var form = FormApp.getActiveForm();
 var giftCode = "True or false?{T}";
@@ -15,6 +15,7 @@ function onOpen(e) {
   FormApp.getUi()
       .createAddonMenu()
       .addItem('Configure GIFT', 'showSidebar')
+      .addItem('About', 'showAbout')
       .addToUi();
 }
 
@@ -44,4 +45,12 @@ function showSidebar() {
   html.giftCode = giftCode;
   var htmlOutput = html.evaluate().setTitle(ADDON_TITLE);
   FormApp.getUi().showSidebar(htmlOutput);
+}
+
+function showAbout() {
+  var ui = HtmlService.createHtmlOutputFromFile('About')
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setWidth(420)
+      .setHeight(270);
+  FormApp.getUi().showModalDialog(ui, 'About Gift Quiz Editor');
 }

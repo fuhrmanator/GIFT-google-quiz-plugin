@@ -1,5 +1,37 @@
-Japanese characters originally came from what country? {
-    ~India
-    =China
-    ~Korea
-    ~Egypt}
+// Feedback validation
+What's the answer to this multiple-choice question? {
+  ~wrong answer#feedback comment on the wrong answer
+  ~another wrong answer#feedback comment on this wrong answer
+  =right answer#Very good!
+}
+
+//Feedback validation
+Deep Thought said " {
+  =forty two#Correct according to The Hitchhiker's Guide to the Galaxy!
+  =42#Correct, as told to Loonquawl and Phouchg
+  =forty-two#Correct!
+}  is the Ultimate Answer to the Ultimate Question of Life, The Universe, and Everything."
+
+   42 is the Absolute Answer to everything.{
+FALSE#42is the Ultimate Answer.#You gave the right answer.}
+
+// Weighted point validation
+::Jesus' hometown::Jesus Christ was from {
+   ~Jerusalem#This was an important city, but the wrong answer.
+   ~%25%Bethlehem#He was born here, but not raised here.
+   ~%50%Galilee#You need to be more specific.
+   =Nazareth#Yes! That's right!
+}.
+
+//Multiple choice with multiple right answers
+What two people are entombed in Grant's tomb? {
+   ~%-100%No one
+   ~%50%Grant
+   ~%50%Grant's wife
+   ~%-100%Grant's father
+}
+
+//Numerical with feedback
+When was Ulysses S. Grant born? {#
+    =1822:0#good response
+    =%50%1822:2#Good response}

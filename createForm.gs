@@ -1,17 +1,21 @@
-function createForm(str){
+function createForm(str, create, append){
   try {
     var giftObj = parser.parse(str);
+    if(!create){
+      throw "Everything looks good!"
+    }
   }
   catch(err) {
     throw err;
   }
   documentProperties.setProperty(form.getId(), str);
   // Clear all questions in the form
-  form.getItems().forEach(function(entry) {
-    form.deleteItem(entry);
-  });
-
-  Logger.log(giftObj);
+  if(create && !append){
+    form.getItems().forEach(function(entry) {
+      form.deleteItem(entry);
+    });
+  }
+  if(create || append) {
   for(var i=0; i<giftObj.length;i++){
     var question = giftObj[i];
 
@@ -32,8 +36,14 @@ function createForm(str){
         item.createChoice("True", question.isTrue),
         item.createChoice("False", !question.isTrue)
       ]);
-      // TODO
-      //item.setPoint(1);
+
+       // Add feedback
+      if(question.feedback1 && item) {
+        item.setFeedbackForCorrect(FormApp.createFeedback().setDisplayText(question.feedback1).build());
+      }
+      if(question.feedback2 && item) {
+        item.setFeedbackForIncorrect(FormApp.createFeedback().setDisplayText(question.feedback2).build());
+      }
     }
 
       // Essay
@@ -121,12 +131,7 @@ function createForm(str){
     }
 
 
-    // Add feedback
-    if(question.feedback1 && item) {
-      item.setFeedbackForCorrect(FormApp.createFeedback().setDisplayText(question.feedback1).build());
-    }
-    if(question.feedback2 && item) {
-      item.setFeedbackForIncorrect(FormApp.createFeedback().setDisplayText(question.feedback2).build());
-    }
+
   }
+ }
 }

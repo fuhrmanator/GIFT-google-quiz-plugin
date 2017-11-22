@@ -1,7 +1,9 @@
 // Simple numerical with validation
 When was Ulysses S. Grant born? {#1822}
+
 // range numerical with validation
 What is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.
+
 // High low numerical with validation
 What is the value of pi (to 3 decimal places)? {#3.141..3.142}.
 

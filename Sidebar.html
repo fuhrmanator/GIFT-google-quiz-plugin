@@ -26,6 +26,13 @@
       bottom: 54px;
       top: 0;
     }
+    .good-validation{
+      color:#008000;
+
+    }
+    #error{
+    margin-bottom: 6px;
+    }
 
     .branding-text {
       left: 7px;
@@ -39,7 +46,7 @@
     textarea {
       resize: vertical;
       width: 100%;
-      height: 320px;
+      height: 250px;
       margin-bottom: 6px;
     }
     .width-100 {
@@ -47,6 +54,14 @@
       box-sizing: border-box;
       -webkit-box-sizing : border-box;‌
       -moz-box-sizing : border-box;
+    }
+    .add-sample{
+      margin-bottom: 6px;
+    }
+    .h4-sample {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 2px;
     }
 
     label {
@@ -77,12 +92,25 @@
   </head>
   <body>
     <div class="sidebar branding-below">
+    <h4 class="h4-sample">Add sample</h4>
+    <div class="add-sample">
+    <select id="sample">
+    <option value="TF">True or false</option>
+    <option value="MC">Multiple choices</option>
+    <option value="NM">Numerical question</option>
+    <option value="ES">Essay</option>
+    </select>
+    <button id="add-sample">Add</button>
+    </div>
       <form>
       <textarea id="gift-code" rows="4" cols="50"><?= giftCode ?></textarea>
 
         <div class="block" id="button-bar">
-          <button class="action" id="save-gift">Save</button>
+          <button class="action" id="validate-gift">Validate</button>
+          <button class="create" id="create-gift">Create form</button>
+          <button class="create" id="append-gift">Append</button>
         </div>
+
       </form>
     </div>
 
@@ -100,8 +128,23 @@
        * and attempt to load any saved settings.
        */
       $(function() {
-
-        $('#save-gift').click(function(event){
+        $('#add-sample').click(function(event){
+        var e = document.getElementById("sample");
+        var strUser = e.options[e.selectedIndex].value;
+        if(strUser == 'TF'){
+          $('#gift-code').val('The sun rises in the east.{T}\n\n' + $('#gift-code').val());
+        }
+        else if(strUser== 'MC'){
+          $('#gift-code').val("// multiple choice with specific feedback\n::Q2:: What's between orange and green in the spectrum?\n{=yellow # correct! ~red # wrong, it's yellow ~blue # wrong, it's yellow}\n\n" + $('#gift-code').val());
+        }
+        else if(strUser== 'NM' ){
+          $('#gift-code').val('What is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.\n\n' + $('#gift-code').val());
+        }
+        else if(strUser== 'ES' ){
+          $('#gift-code').val('Write a short biography of Dag Hammarskjöld. {}\n\n' + $('#gift-code').val());
+        }
+        });
+        $('#create-gift').click(function(event){
             $('#error').remove();
             event.preventDefault();
                 event.stopPropagation();
@@ -115,12 +158,51 @@
                 showError(msg, $('#gift-code'));
                 })
                 .withUserObject(this)
-                .createForm($('#gift-code').val());
+                .createForm($('#gift-code').val(), true);
+        });
+      $('#validate-gift').click(function(event){
+            $('#error').remove();
+            event.preventDefault();
+                event.stopPropagation();
+                google.script.run
+                .withSuccessHandler(
+                function(msg, element) {
+
+                })
+                .withFailureHandler(
+                function(msg, element) {
+                showError(msg, $('#gift-code'));
+                })
+                .withUserObject(this)
+                .createForm($('#gift-code').val(), false);
+        });
+      $('#append-gift').click(function(event){
+            $('#error').remove();
+            event.preventDefault();
+                event.stopPropagation();
+                google.script.run
+                .withSuccessHandler(
+                function(msg, element) {
+
+                })
+                .withFailureHandler(
+                function(msg, element) {
+                showError(msg, $('#gift-code'));
+                })
+                .withUserObject(this)
+                .createForm($('#gift-code').val(), true, true);
         });
       });
+
       function showError(msg, element) {
+      if(msg == "Everything looks good!"){
+      var div = $('<div id="error" class="good-validation">' + msg + '</div>');
+        $(element).after(div);
+      }
+      else {
         var div = $('<div id="error" class="error">' + msg + '</div>');
         $(element).after(div);
+        }
       }
 
     </script>

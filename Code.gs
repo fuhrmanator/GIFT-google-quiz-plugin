@@ -14,7 +14,7 @@ function onOpen(e) {
   form.setIsQuiz(true);
   FormApp.getUi()
       .createAddonMenu()
-      .addItem('Configure GIFT', 'showSidebar')
+      .addItem('Create/Edit GIFT', 'showSidebar')
       .addItem('About', 'showAbout')
       .addToUi();
 }

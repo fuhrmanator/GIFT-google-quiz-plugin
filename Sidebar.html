@@ -14,226 +14,241 @@
  * limitations under the License.
  -->
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <base target="_top">
-    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
-    <!-- The CSS package above applies Google styling to buttons and other elements. -->
-
-    <style>
-    .branding-below {
-      bottom: 54px;
-      top: 0;
-    }
-     #error.good-validation{
-      height: 20px;
-      color:#008000;
-      overflow-y: hidden;
-
-    }
-    #error{
-     margin-bottom: 6px;
-     height: 100px;
-     overflow-x: hidden;
-     overflow-y: scroll;
-    }
-
-    .branding-text {
-      left: 7px;
-      position: relative;
-      top: 3px;
-    }
-
-    .logo {
-      vertical-align: middle;
-    }
-    textarea {
-      resize: vertical;
-      width: 100%;
-      height: 250px;
+ <!DOCTYPE html>
+ <html>
+   <head>
+     <base target="_top">
+     <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+     <!-- The CSS package above applies Google styling to buttons and other elements. -->
+ 
+     <style>
+     .branding-below {
+       bottom: 54px;
+       top: 0;
+     }
+      #error.good-validation{
+       height: 20px;
+       color:#008000;
+       overflow-y: hidden;
+       
+     }
+     #error{
       margin-bottom: 6px;
-    }
-    .width-100 {
-      width: 100%;
-      box-sizing: border-box;
-      -webkit-box-sizing : border-box;‌
-      -moz-box-sizing : border-box;
-    }
-    .add-sample{
-      margin-bottom: 6px;
-    }
-    .h4-sample {
-    display: block;
-    margin-bottom: 8px;
-    margin-top: 2px;
-    }
-
-    label {
-      font-weight: bold;
-    }
-
-    #creator-options,
-    #respondent-options {
-      background-color: #eee;
-      border-color: #eee;
-      border-width: 5px;
-      border-style: solid;
-      display: none;
-    }
-
-    #creator-email,
-    #respondent-email,
-    #button-bar,
-    #submit-subject {
-      margin-bottom: 10px;
-    }
-
-    #response-step {
-      display: inline;
-    }
-
-    </style>
-  </head>
-  <body>
-    <div class="sidebar branding-below">
-    <h4 class="h4-sample">Add sample</h4>
-    <div class="add-sample">
-    <select id="sample">
-    <option value="TF">True or false</option>
-    <option value="TFF">True or false with feedback</option>
-    <option value="MC">Multiple choices</option>
-    <option value="MCMA">Multiple choices multiple good answer</option>
-    <option value="NMS">Numerical question with validation</option>
-    <option value="NM">Numerical question</option>
-    <option value="ES">Essay</option>
-    <option value="DESC">Description</option>
-    </select>
-    <button id="add-sample">Add</button>
-    </div>
-      <form>
-      <textarea id="gift-code" rows="4" cols="50"><?= giftCode ?></textarea>
-
-        <div class="block" id="button-bar">
-          <!--button class="action" id="validate-gift">Validate</button-->
-          <button class="create" id="create-gift">Create form</button>
-          <button class="create" id="append-gift">Append</button>
-        </div>
-
-      </form>
-    </div>
-
-    <div class="sidebar bottom">
-      <img alt="Add-on logo" class="logo" width="25"
-          src="https://g-suite-documentation-images.firebaseapp.com/images/newFormNotificationsicon.png">
-      <span class="gray branding-text">Gift Quiz Editor by Jonathan G.V.</span>
-    </div>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
-    </script>
-    <script>
-      /**
-       * On document load, assign required handlers to each element,
-       * and attempt to load any saved settings.
-       */
-      $(function() {
-        $('#add-sample').click(function(event){
-        var e = document.getElementById("sample");
-        var strUser = e.options[e.selectedIndex].value;
-        if(strUser == 'TF'){
-          $('#gift-code').val('The sun rises in the east.{T}\n\n' + $('#gift-code').val());
-        }
-        else if(strUser == 'TFF'){
-           $('#gift-code').val("//True or false with feedback\n Grant is buried in Grant's tomb.{FALSE#wrong answer feedback#right answer feedback}\n\n" + $('#gift-code').val());
-        }
-        else if(strUser== 'MC'){
-          $('#gift-code').val("// multiple choice with specific feedback\n::Q2:: What's between orange and green in the spectrum?\n{=yellow # correct! ~red # wrong, it's yellow ~blue # wrong, it's yellow}\n\n" + $('#gift-code').val());
-        }
-        else if (strUser == 'MCMA'){
-          $('#gift-code').val("// multiple choice with multiple good answer (checkbox)\nWhat two people are entombed in Grant's tomb? {\n~%-100%No one\n~%50%Grant # yup its good\n~%50%Grant's wife\n ~%-100%Grant's father\n}\n\n" + $('#gift-code').val());
-        }
-        else if(strUser== 'NMS' ){
-          $('#gift-code').val('// question: 229196  name: Test Numerical\n::Test Numerical::Whats two plus 4?{#\n=%100%6:0#Good job its really 6!\n}\n\n' + $('#gift-code').val());
-        }
-        else if(strUser== 'NM' ){
-          $('#gift-code').val('//Custom Validation not yet supported\nWhat is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.\n\n' + $('#gift-code').val());
-        }
-        else if(strUser== 'ES' ){
-          $('#gift-code').val('Write a short biography of Dag Hammarskjöld. {}\n\n' + $('#gift-code').val());
-        } else if(strUser == 'DESC'){
-          $('#gift-code').val('You can use your pencil and paper for these next math questions.\n\n' + $('#gift-code').val());
-        }
-        });
-        $('#create-gift').click(function(event){
-            $('#error').remove();
-            event.preventDefault();
-                event.stopPropagation();
-                google.script.run
-                .withSuccessHandler(
-                function(msg, element) {
-
-                })
-                .withFailureHandler(
-                function(err, element) {
-                showError(err.message, $('#gift-code'));
-                })
-                .withUserObject(this)
-                .createForm($('#gift-code').val(), true);
-        });
-      $('#append-gift').click(function(event){
-            $('#error').remove();
-            event.preventDefault();
-                event.stopPropagation();
-                google.script.run
-                .withSuccessHandler(
-                function(msg, element) {
-
-                })
-                .withFailureHandler(
-                function(msg, element) {
-                  showError(msg.toString());
-                })
-                .withUserObject(this)
-                .createForm($('#gift-code').val(), true, true);
-        });
-      });
-
-      function showError(msg) {
-      if(msg == "Everything looks good!"){
-        var div = $('<div id="error" class="good-validation">' + msg + '</div>');
-        $("#gift-code").after(div);
-      }
-      else if(typeof msg != 'object' && msg.substr(msg.length - 6) == "added."){
-        var div = $('<div id="error" class="good-validation">' + msg + '</div>');
-        $("#gift-code").after(div);
-      }
-      else {
-        var div = $('<div id="error" class="error">' + msg + '</div>');
-        $("#gift-code").after(div);
-        }
-      }
-
-      var typingTimer;
-      var doneTypingInterval = 2000;
-
-      $('#gift-code').keyup(function(){
-        clearTimeout(typingTimer);
-        if ($('#gift-code').val()) {
-          typingTimer = setTimeout(doneTyping, doneTypingInterval);
-        }
-      });
-
-      function doneTyping () {
-            $('#error').remove();
-                google.script.run
-                .withSuccessHandler()
-                .withFailureHandler(function(msg) {
-                showError(msg, $('#gift-code'));
-                })
-                .withUserObject(this)
-                .createForm($('#gift-code').val(), false);
-      }
-
-    </script>
-  </body>
-</html>
+      height: 100px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+     }
+ 
+     .branding-text {
+       left: 7px;
+       position: relative;
+       top: 3px;
+     }
+     
+     .logo {
+       vertical-align: middle;
+     }
+     textarea {
+       resize: vertical;
+       width: 100%;
+       height: 250px;
+       margin-bottom: 6px;
+     }
+     .width-100 {
+       width: 100%;
+       box-sizing: border-box;
+       -webkit-box-sizing : border-box;‌
+       -moz-box-sizing : border-box;
+     }
+     .add-sample{
+       margin-bottom: 6px;
+     }
+     .h4-sample {
+     display: block;
+     margin-bottom: 8px;
+     margin-top: 2px;
+     }
+     #sample {
+       width:180px;
+     }
+     #add-sample{
+       border-bottom: 2px;
+     }
+     label {
+       font-weight: bold;
+     }
+     
+     #creator-options,
+     #respondent-options {
+       background-color: #eee;
+       border-color: #eee;
+       border-width: 5px;
+       border-style: solid;
+       display: none;
+     }
+     
+     #creator-email,
+     #respondent-email,
+     #button-bar,
+     #submit-subject {
+       margin-bottom: 10px;
+     }
+     
+     #response-step {
+       display: inline;
+     }
+     
+     </style>
+   </head>
+   <body>
+     <div class="sidebar branding-below">
+     <h4 class="h4-sample">Add sample</h4>
+     <div class="add-sample">
+     <select id="sample">
+     <option value="TF">True or false</option>
+     <option value="TFF">True or false with feedback</option>
+     <option value="MC">Multiple choices</option>
+     <option value="MCMA">Multiple choices multiple good answer</option>
+     <option value="NMS">Numerical question with validation</option>
+     <option value="NM">Numerical question</option>
+     <option value="ES">Essay</option>
+     <option value="DESC">Description</option>
+     </select>
+     <button id="add-sample">Add</button>
+     </div>
+       <form>
+       <textarea id="gift-code" rows="4" cols="50"><?= giftCode ?></textarea>
+         
+         <div class="block" id="button-bar">
+           <!--button class="action" id="validate-gift">Validate</button-->
+           <button class="create" id="create-gift">Create form</button>
+           <button id="append-gift">Append</button>
+         </div>
+         
+       </form>
+     </div>
+     
+     <div class="sidebar bottom">
+       <img alt="Add-on logo" class="logo" width="25"
+           src="https://g-suite-documentation-images.firebaseapp.com/images/newFormNotificationsicon.png">
+       <span class="gray branding-text">GIFT Quiz Editor by Jonathan G.V.</span>
+     </div>
+     
+     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+     </script>
+     <script>
+       /**
+        * On document load, assign required handlers to each element,
+        * and attempt to load any saved settings.
+        */
+       $(function() {
+         $('#add-sample').click(function(event){
+         var e = document.getElementById("sample");
+         var strUser = e.options[e.selectedIndex].value;
+         if(strUser == 'TF'){
+           $('#gift-code').val('The sun rises in the east.{T}\n\n' + $('#gift-code').val());
+         } 
+         else if(strUser == 'TFF'){
+            $('#gift-code').val("//True or false with feedback\n Grant is buried in Grant's tomb.{FALSE#wrong answer feedback#right answer feedback}\n\n" + $('#gift-code').val());
+         }
+         else if(strUser== 'MC'){
+           $('#gift-code').val("// multiple choice with specific feedback\n::Q2:: What's between orange and green in the spectrum?\n{=yellow # correct! ~red # wrong, it's yellow ~blue # wrong, it's yellow}\n\n" + $('#gift-code').val());
+         }
+         else if (strUser == 'MCMA'){
+           $('#gift-code').val("// multiple choice with multiple good answer (checkbox)\nWhat two people are entombed in Grant's tomb? {\n~%-100%No one\n~%50%Grant # yup its good\n~%50%Grant's wife\n ~%-100%Grant's father\n}\n\n" + $('#gift-code').val());
+         }
+         else if(strUser== 'NMS' ){
+           $('#gift-code').val('// question: 229196  name: Test Numerical\n::Test Numerical::Whats two plus 4?{#\n=%100%6:0#Good job its really 6!\n}\n\n' + $('#gift-code').val());
+         }
+         else if(strUser== 'NM' ){
+           $('#gift-code').val('//Custom Validation not yet supported\nWhat is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.\n\n' + $('#gift-code').val());
+         } 
+         else if(strUser== 'ES' ){
+           $('#gift-code').val('Write a short biography of Dag Hammarskjöld. {}\n\n' + $('#gift-code').val());
+         } else if(strUser == 'DESC'){
+           $('#gift-code').val('You can use your pencil and paper for these next math questions.\n\n' + $('#gift-code').val());
+         }
+         });
+         $('#create-gift').click(function(event){
+             $('#error').remove();
+             $('#create-gift').prop('disabled', true);
+             $('#append-gift').prop('disabled', true);
+             event.preventDefault();
+                 event.stopPropagation();
+                 google.script.run
+                 .withSuccessHandler(
+                 function(msg, element) {
+                 $('#create-gift').prop('disabled', false);
+                 $('#append-gift').prop('disabled', false);                
+                 })
+                 .withFailureHandler(
+                 function(err, element) {
+                 showError(err.message, $('#gift-code'));
+                 $('#create-gift').prop('disabled', false);
+                 $('#append-gift').prop('disabled', false);                
+                 })
+                 .withUserObject(this)
+                 .createForm($('#gift-code').val(), true);
+         });
+       $('#append-gift').click(function(event){
+             $('#error').remove();
+             $('#create-gift').prop('disabled', true);
+             $('#append-gift').prop('disabled', true);
+             event.preventDefault();
+                 event.stopPropagation();
+                 google.script.run
+                 .withSuccessHandler(
+                 function(msg, element) {
+                 $('#create-gift').prop('disabled', false);
+                 $('#append-gift').prop('disabled', false);                
+                 })
+                 .withFailureHandler(
+                 function(msg, element) {
+                   showError(msg.toString());
+                 $('#create-gift').prop('disabled', false);
+                 $('#append-gift').prop('disabled', false);                
+                 })
+                 .withUserObject(this)
+                 .createForm($('#gift-code').val(), true, true);
+         });
+       });
+       
+       function showError(msg) {
+       if(msg == "Everything looks good!"){
+         var div = $('<div id="error" class="good-validation">' + msg + '</div>');
+         $("#gift-code").after(div);
+       }
+       else if(typeof msg != 'object' && msg.substr(msg.length - 6) == "added."){
+         var div = $('<div id="error" class="good-validation">' + msg + '</div>');
+         $("#gift-code").after(div);
+       }
+       else {
+         var div = $('<div id="error" class="error">' + msg + '</div>');
+         $("#gift-code").after(div);
+         }
+       }
+       
+       var typingTimer;
+       var doneTypingInterval = 2000;
+       
+       $('#gift-code').keyup(function(){
+         clearTimeout(typingTimer);
+         if ($('#gift-code').val()) {
+           typingTimer = setTimeout(doneTyping, doneTypingInterval);
+         }
+       });
+       
+       function doneTyping () {
+             $('#error').remove();
+                 google.script.run
+                 .withSuccessHandler()
+                 .withFailureHandler(function(msg) {
+                 showError(msg, $('#gift-code'));
+                 })
+                 .withUserObject(this)
+                 .createForm($('#gift-code').val(), false);
+       }
+      
+     </script>
+   </body>
+ </html>

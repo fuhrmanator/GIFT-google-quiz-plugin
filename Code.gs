@@ -1,4 +1,19 @@
-var ADDON_TITLE = 'Gift Quiz Editor';
+/**
+ * @OnlyCurrentDoc
+ *
+ * The above comment directs Apps Script to limit the scope of file
+ * access for this add-on. It specifies that this add-on will only
+ * attempt to read or modify the files in which the add-on is used,
+ * and not all of the user's files. The authorization request message
+ * presented to users will reflect this limited scope.
+ */
+
+/**
+ * A global constant String holding the title of the add-on. This is
+ * used to identify the add-on in the notification emails.
+ */
+var ADDON_TITLE = 'GIFT Quiz Editor'; 
+
 var documentProperties = PropertiesService.getDocumentProperties();
 var form = FormApp.getActiveForm();
 var giftCode = "True or false?{T}";
@@ -52,5 +67,7 @@ function showAbout() {
       .setSandboxMode(HtmlService.SandboxMode.IFRAME)
       .setWidth(420)
       .setHeight(270);
-  FormApp.getUi().showModalDialog(ui, 'About Gift Quiz Editor');
+  FormApp.getUi().showModalDialog(ui, 'About GIFT Quiz Editor');
 }
+
+

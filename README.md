@@ -34,3 +34,8 @@ When you install GIFT Quiz Editor in Google Forms, you will be asked to grant pe
 | View and manage documents that this application has been installed in | GIFT Quiz Editor can delete and insert questions in your Google Form. |
 | View and manage data associated with the application | GIFT Quiz Editor saves settings (such as the current GIFT code for the form) on the google server.|
 | Allow this application to run when you are not present| GIFT Quiz Editor uses an authentication scheme (OAuth) that uses tokens, and these tokens can be refreshed when you're not present.
+
+### How to update the parser
+
+- `npm run-script build` for the GIFT-grammer-PEG.js project.
+- copy the `gift-parser-globals.js` and `gift-parser-globalsJS.html` files to this project.

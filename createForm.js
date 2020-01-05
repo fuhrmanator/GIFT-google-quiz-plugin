@@ -1,9 +1,6 @@
-function createForm(str, create, append) {
+function createForm(str, append) {
 	try {
 		var giftObj = giftParser.parse(str);
-		if (!create) {
-			throw "Everything looks good!"
-		}
 	} catch (err) {
 		if (err.location) {
 			// Set up the error message with proper context
@@ -33,24 +30,21 @@ function createForm(str, create, append) {
 	}
 	documentProperties.setProperty(form.getId(), str);
 	// Clear all questions in the form
-	if (create && !append) {
+	if (!append) {
 		form.getItems().forEach(function (entry) {
 			form.deleteItem(entry);
 		});
 	}
-	if (create || append) {
-		for (var i = 0; i < giftObj.length; i++) {
-			addQuestion(form, giftObj[i]);
-    	}
-		// throw giftObj.length + " question(s) added.";
-	}
+	for (var i = 0; i < giftObj.length; i++) {
+		addQuestion(form, giftObj[i]);
+   	}
 }
 
 function addQuestion(form, question) {
   
   var giftTitle = (question.title ? question.title // + " - " + question.stem.text
 				 : "");
-  var stemText = question.stem.text.replace(/<(?:.|\n)*?>/gm, '');
+  var stemText = stripHTML(question.stem.text);
   var item;
   switch (question.type) {
     case "Description":
@@ -68,15 +62,15 @@ function addQuestion(form, question) {
       ]);
       
       // Add feedback
-      if (question.correctFeedback.text) {
+      if (question.correctFeedback) {
         var correctFeedback = FormApp.createFeedback()
-        .setText(question.correctFeedback.text.replace(/<(?:.|\n)*?>/gm, ''))
+        .setText(stripHTML(question.correctFeedback.text))  // clear HTML formatting
         .build();
         item.setFeedbackForCorrect(correctFeedback);
       }
       if (question.incorrectFeedback && item) {
         var incorrectFeedback = FormApp.createFeedback()
-        .setText(question.incorrectFeedback.text.replace(/<(?:.|\n)*?>/gm, ''))
+        .setText(stripHTML(question.incorrectFeedback.text))
         .build();
         item.setFeedbackForIncorrect(incorrectFeedback);
       }
@@ -94,7 +88,7 @@ function addQuestion(form, question) {
         item = form.addMultipleChoiceItem().setTitle(stemText);
       }
       item.setPoints(1);
-      item.setHelpText("Note: this question is not completely compatible with Google's quizzes, because they don't support individual feedback items for each answer.");
+      item.setHelpText("Note: this MULTIPLE CHOICE question is not completely compatible with Google's quizzes. Individual feedback items for each answer are not (yet?) supported by Google. Feedback is aggregated into only CORRECT and INCORRECT.");
       
       var choices = [];
       if (question.choices) {
@@ -106,15 +100,14 @@ function addQuestion(form, question) {
             question.choices[j].isCorrect = true;
           }
           
-          var choice = item.createChoice(question.choices[j].text.text.replace(/<(?:.|\n)*?>/gm, ''), question.choices[j].isCorrect);
+          var choice = item.createChoice(stripHTML(question.choices[j].text.text), question.choices[j].isCorrect);
           // Not supported by google
           //  if(question.choices[j].weight){
           //    choice.setPoints(question.choices[j].weight);
           //  }
-          if (question.choices[j].feedback.text) {
-            // Logger.log('Adding feedback');
-            var fbMsg = "\n" + question.choices[j].text.text.replace(/<(?:.|\n)*?>/gm, '') + " (" + 
-              (question.choices[j].isCorrect ? "correct" : "incorrect") + "): " + question.choices[j].feedback.text.replace(/<(?:.|\n)*?>/gm, '')
+          if (question.choices[j].feedback) {
+            var fbMsg = "\n" + stripHTML(question.choices[j].text.text) + " (" + 
+              (question.choices[j].isCorrect ? "correct" : "incorrect") + "): " + stripHTML(question.choices[j].feedback.text);
             if (question.choices[j].isCorrect) {
               feedbackPositive += fbMsg;
             } else {
@@ -144,41 +137,38 @@ function addQuestion(form, question) {
       break;
       
     case "Matching":
+      // API won't allow configuring choices as of 2018-07-19 even though the GUI will (Answer Key)
       item = form.addGridItem();
       var rows = [], cols = [];
       var choiceString = "";
       // collect rows and columns
       for (var j = 0; j < question.matchPairs.length; j++) {
         var pair = question.matchPairs[j];
-        if (pair.subquestion.text != "") rows.push(pair.subquestion.text.replace(/<(?:.|\n)*?>/gm, ''));
+        if (pair.subquestion.text != "") rows.push(stripHTML(pair.subquestion.text));
         add(cols, pair.subanswer); // apps script has no Set implementation
-        choiceString += pair.subquestion.text.replace(/<(?:.|\n)*?>/gm, '') + " -> " + pair.subanswer + "\n";
+        choiceString += stripHTML(pair.subquestion.text) + " -> " + pair.subanswer + ", \n";
       }
       item.setTitle(stemText)
         .setRows(rows)
         .setColumns(cols);
-      item.setHelpText("Note: this question did not completely import from GIFT because Google's API doesn't allow creating the Answer Key. You can do it manually by matching the following answers:\n" + choiceString);
+      item.setHelpText("Note: this MATCHING question did not completely import from GIFT because Google's API doesn't allow creating the Answer Key (or setting the points). You can do it manually by matching the following answers:\n" + choiceString);
+      // item.setPoints(1);     // not supported by Google (yet?)
 
       break;
       
     case "Short":
       // API won't allow choices as of 2018-07-19 even though the GUI will (Answer Key)
-//      var choices = [];
       item = form.addTextItem().setTitle(stemText);
       var choiceString = "";
-      for (var i=0; i<question.choices.length; i++) { choiceString += question.choices[i].text.text + '\n'; }
-      item.setHelpText("Note: this question did not completely import from GIFT because Google's API doesn't allow creating the accepted answers in the Answer Key. You can do it manually by adding the following answers:\n" + choiceString);
+      for (var i=0; i<question.choices.length; i++) { choiceString += question.choices[i].text.text + ', \n'; }
+      item.setHelpText("Note: this SHORT ANSWER question did not completely import from GIFT because Google's API doesn't allow creating the accepted answers in the Answer Key. You can do it manually by adding the following answers:\n" + choiceString);
       item.setPoints(1);
-//      for (var i=0; i<question.choices.length; i++) {
-//        choices.push(item.createChoice(question.choices[i].text.text, question.choices[i].isCorrect)); 
-//      }
-//      item.setChoices(choices);
       // TODO support feedback for specific answers?
       break;
       
     case "Numerical":
       item = form.addTextItem().setTitle(stemText);
-      item.setHelpText("Note: this question did not completely import from GIFT because it's not compatible with Google Quizzes (yet?).");
+      item.setHelpText("Note: this NUMERICAL question did not completely import from GIFT because it's not compatible with Google Quizzes (yet?).");
       item.setPoints(1);
       // 
       if (question.choices) {
@@ -206,4 +196,8 @@ function add(set, item){
     if (set[i] == item) return;
   }
   set.push(item);
+}
+
+function stripHTML(str) {
+  return str.replace(/<(?:.|\n)*?>/gm, '');
 }

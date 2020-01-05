@@ -1,0 +1,153 @@
+<script>
+var LOADING_CLASS_CSS = 'lds-ellipsis';
+/**
+ * On document load, assign required handlers to each element,
+ * and attempt to load any saved settings.
+ */
+$(function () {
+    $('#add-sample').click(function (event) {
+        var e = document.getElementById("sample");
+        var strUser = e.options[e.selectedIndex].value;
+        if (strUser == 'TF') {
+            $('#gift-code').val('The sun rises in the east.{T}\n\n' + $('#gift-code').val());
+        } else if (strUser == 'TFF') {
+            $('#gift-code').val("//True or false with feedback\n Grant is buried in Grant's tomb.{FALSE#wrong answer feedback#right answer feedback}\n\n" + $('#gift-code').val());
+        } else if (strUser == 'MC') {
+            $('#gift-code').val("// multiple choice with specific feedback\n::Q2:: What's between orange and green in the spectrum?\n{=yellow # correct! ~red # wrong, it's yellow ~blue # wrong, it's yellow}\n\n" + $('#gift-code').val());
+        } else if (strUser == 'MCMA') {
+            $('#gift-code').val("// multiple choice with multiple good answer (checkbox)\nWhat two people are entombed in Grant's tomb? {\n~%-100%No one\n~%50%Grant # yup its good\n~%50%Grant's wife\n ~%-100%Grant's father\n}\n\n" + $('#gift-code').val());
+        } else if (strUser == 'NMS') {
+            $('#gift-code').val('// question: 229196  name: Test Numerical\n::Test Numerical::Whats two plus 4?{#\n=%100%6:0#Good job its really 6!\n}\n\n' + $('#gift-code').val());
+        } else if (strUser == 'NM') {
+            $('#gift-code').val('//Custom Validation not yet supported\nWhat is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.\n\n' + $('#gift-code').val());
+        } else if (strUser == 'ES') {
+            $('#gift-code').val('Write a short biography of Dag Hammarskjöld. {}\n\n' + $('#gift-code').val());
+        } else if (strUser == 'DESC') {
+            $('#gift-code').val('You can use your pencil and paper for these next math questions.\n\n' + $('#gift-code').val());
+        }
+    });
+    $('#create-gift').click(function (event) {
+        $('#error').remove();
+        showAlert("info","Processing GIFT...");
+        $('#create-gift').prop('disabled', true);
+        $('#append-gift').prop('disabled', true);
+        $('#loading').addClass(LOADING_CLASS_CSS);
+        event.preventDefault();
+        event.stopPropagation();
+        google.script.run
+            .withSuccessHandler(
+                function (msg, element) {
+                    $('#create-gift').prop('disabled', false);
+                    $('#append-gift').prop('disabled', false);
+                    $('#error').remove();
+                    $('#loading').removeClass(LOADING_CLASS_CSS);
+                    showAlert("success", "Form successfully created.");
+                })
+            .withFailureHandler(
+                function (err, element) {
+                    $('#create-gift').prop('disabled', false);
+                    $('#append-gift').prop('disabled', false);
+                    $('#error').remove();
+                    $('#loading').removeClass(LOADING_CLASS_CSS);
+                    showAlert("error", err.message);
+                })
+            .withUserObject(this)
+            .createForm($('#gift-code').val(), false);  // don't append
+    });
+    $('#append-gift').click(function (event) {
+        $('#error').remove();
+        showAlert("info","Processing GIFT...");
+        $('#create-gift').prop('disabled', true);
+        $('#append-gift').prop('disabled', true);
+        $('#loading').addClass(LOADING_CLASS_CSS);
+        event.preventDefault();
+        event.stopPropagation();
+        google.script.run
+            .withSuccessHandler(
+                function (msg, element) {
+                    $('#create-gift').prop('disabled', false);
+                    $('#append-gift').prop('disabled', false);
+                    $('#error').remove();
+                    $('#loading').removeClass(LOADING_CLASS_CSS);
+                    showAlert("success", "Form successfully created.");
+                })
+            .withFailureHandler(
+                function (msg, element) {
+                    $('#create-gift').prop('disabled', false);
+                    $('#append-gift').prop('disabled', false);
+                    $('#error').remove();
+                    $('#loading').removeClass(LOADING_CLASS_CSS);
+                    showAlert("error", msg.toString());
+                })
+            .withUserObject(this)
+            .createForm($('#gift-code').val(), true);  // append
+    });
+});
+
+/**
+ * Inserts a div that contains an error message after a given element.
+ *
+ * @param msg The error message to display.
+ * @param element The element after which to display the error.
+ */
+function showAlert(msgClass, msg, element) {
+  if (!element) {
+    element = $('#button-bar');
+  }
+  var div = $('<div id="error" class="'+ msgClass + '">' + msg + '</div>');
+  $(element).after(div);
+  console.log("ShowAlert: " + msgClass + " " + msg);
+}
+
+var typingTimer;
+var doneTypingInterval = 1000;
+
+$('#gift-code').keyup(function () {
+    $("#error").remove();
+    clearTimeout(typingTimer);
+    if ($('#gift-code').val()) {
+        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+    }
+});
+
+function doneTyping() {
+    $('#error').remove();
+    var giftText = $('#gift-code').val();
+    showAlert("info","Validating GIFT...");
+
+    try {
+        var output = giftParser.parse(giftText);
+        $('#error').remove();
+        showAlert("success","Recognized " + output.length + " questions from GIFT.");
+    } catch (e) {
+        $('#error').remove();
+        showAlert("error",buildErrorMessage(giftText, e));
+    }
+
+}
+
+function buildErrorMessage(giftStr, err) {
+  var delta = 10;
+  var badGIFT = "";
+  var index = err.location.start.offset;
+  var paddingBefore = "";
+  var paddingAfter = "";
+  var underlinedText = "<u>" + giftStr.substring(err.location.start.offset, err.location.end.offset + 1) + "</u>";
+
+  if (err.location.start.offset - delta > 0) {
+    paddingBefore = giftStr.substring(err.location.start.offset - delta, err.location.start.offset - 1);
+  } else if (err.location.start.offset != 0) {
+    paddingBefore = giftStr.substring(0, err.location.start.offset - 1);
+  }
+
+  if (err.location.end.offset + delta < giftStr.length) {
+    paddingAfter = giftStr.substring(err.location.end.offset + 2, err.location.end.offset + delta);
+  } else if (err.location.end.offset != giftStr.length) {
+    paddingAfter = giftStr.substring(err.location.end.offset + 2, giftStr.length);
+  }
+
+  badGIFT = paddingBefore + underlinedText + paddingAfter;
+  return "Line " + parseInt(err.location.start.line) + ", column " + parseInt(err.location.start.column) + " near:<b> " + badGIFT + "</b><br> " + err.message;
+
+}    
+</script>

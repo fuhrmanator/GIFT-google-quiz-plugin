@@ -17,3 +17,11 @@ You can submit issues, requests and comments on this github repository.
 
 - `npm run-script build` for the GIFT-grammer-PEG.js project.
 - copy the `gift-parser-globals.js` and `gift-parser-globalsJS.html` files to this project.
+
+
+### How to use clasp
+
+- `clasp pull` to get the code from `script.google.com` project space
+- `clasp push` to put it back
+
+Note that these commands take ALL THE FILES and there's no intelligent merging like in git.

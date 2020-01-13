@@ -21,8 +21,8 @@ var giftCode;
 /**
  * Adds a custom menu to the active form to show the add-on sidebar.
  *
- * @param {object} e The event parameter for a simple onOpen trigger. To
- *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
+ * @param {object} e The event parameter for a simple onOpen trig-ger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trig-ger is
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
@@ -37,10 +37,10 @@ function onOpen(e) {
 /**
  * Runs when the add-on is installed.
  *
- * @param {object} e The event parameter for a simple onInstall trigger. To
- *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
- *     running in, inspect e.authMode. (In practice, onInstall triggers always
- *     run in AuthMode.FULL, but onOpen triggers may be AuthMode.LIMITED or
+ * @param {object} e The event parameter for a simple onInstall trig-ger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trig-ger is
+ *     running in, inspect e.authMode. (In practice, onInstall trig-gers always
+ *     run in AuthMode.FULL, but onOpen trig-gers may be AuthMode.LIMITED or
  *     AuthMode.NONE).
  */
 function onInstall(e) {

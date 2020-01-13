@@ -12,12 +12,13 @@
  * A global constant String holding the title of the add-on. This is
  * used to identify the add-on in the notification emails.
  */
-var ADDON_TITLE = 'GIFT Quiz Editor dev'; 
+var ADDON_TITLE = 'GIFT Quiz Editor'; 
 var defaultGiftCode = "The sun sets in the east. {False}";
 
 var documentProperties = PropertiesService.getDocumentProperties();
 var form = FormApp.getActiveForm();
 var giftCode;
+
 /**
  * Adds a custom menu to the active form to show the add-on sidebar.
  *
@@ -26,10 +27,9 @@ var giftCode;
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
-  form.setIsQuiz(true);
   FormApp.getUi()
       .createAddonMenu()
-      .addItem('Create/Edit GIFT', 'showSidebar')
+      .addItem('Open editor', 'showSidebar')
       .addItem('About', 'showAbout')
       .addToUi();
 }
@@ -44,6 +44,7 @@ function onOpen(e) {
  *     AuthMode.NONE).
  */
 function onInstall(e) {
+  form.setIsQuiz(true);  // TODO ask user before doing this?
   onOpen(e);
 }
 

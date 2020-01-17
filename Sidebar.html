@@ -16,27 +16,31 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
-    <!-- The CSS package above applies Google styling to buttons and other elements. -->
 
-    <style>
+<head>
+  <base target="_top">
+  <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+  <!-- The CSS package above applies Google styling to buttons and other elements. -->
+
+  <style>
     .branding-below {
       bottom: 54px;
       top: 0;
     }
-     #error.success{
-      color:#008000;
+
+    #error.success {
+      color: #008000;
     }
-     #error.info{
-      color:#000080;
+
+    #error.info {
+      color: #000080;
     }
-    #error{
-     margin-bottom: 6px;
-     height: 100px;
-     overflow-x: hidden;
-     overflow-y: scroll;
+
+    #error {
+      margin-bottom: 6px;
+      height: 100px;
+      overflow-x: hidden;
+      overflow-y: scroll;
     }
 
     .branding-text {
@@ -44,40 +48,47 @@
       position: relative;
       top: 3px;
     }
-    
+
     .logo {
       vertical-align: middle;
     }
+
     textarea {
       resize: vertical;
       width: 100%;
       height: 250px;
       margin-bottom: 6px;
     }
+
     .width-100 {
       width: 100%;
       box-sizing: border-box;
-      -webkit-box-sizing : border-box;‌
-      -moz-box-sizing : border-box;
+      -webkit-box-sizing: border-box;
+      ‌-moz-box-sizing: border-box;
     }
-    .add-sample{
+
+    .add-sample {
       margin-bottom: 6px;
     }
+
     .h4-sample {
-    display: block;
-    margin-bottom: 8px;
-    margin-top: 2px;
+      display: block;
+      margin-bottom: 8px;
+      margin-top: 2px;
     }
+
     #sample {
-      width:180px;
+      width: 180px;
     }
-    #add-sample{
+
+    #add-sample {
       border-bottom: 2px;
     }
+
     label {
       font-weight: bold;
     }
-    
+
     #creator-options,
     #respondent-options {
       background-color: #eee;
@@ -86,114 +97,134 @@
       border-style: solid;
       display: none;
     }
-    
+
     #creator-email,
     #respondent-email,
     #button-bar,
     #submit-subject {
       margin-bottom: 10px;
     }
-    
+
     #response-step {
       display: inline;
     }
-    /* CSS animated spinner */
-.lds-ellipsis {
-  display: inline-block;
-  position: relative;
-  width: 32px;
-  height: 32px;
-}
-.lds-ellipsis div {
-  position: absolute;
-  top: 27px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: #f88;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
-}
-.lds-ellipsis div:nth-child(1) {
-  left: 6px;
-  animation: lds-ellipsis1 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(2) {
-  left: 6px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(3) {
-  left: 26px;
-  animation: lds-ellipsis2 0.6s infinite;
-}
-.lds-ellipsis div:nth-child(4) {
-  left: 45px;
-  animation: lds-ellipsis3 0.6s infinite;
-}
-@keyframes lds-ellipsis1 {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes lds-ellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes lds-ellipsis2 {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(19px, 0);
-  }
-}
 
-    </style>
-  </head>
-  <body>
-    <div class="sidebar branding-below">
+    /* CSS animated spinner */
+    .lds-ellipsis {
+      display: inline-block;
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+
+    .lds-ellipsis div {
+      position: absolute;
+      top: 27px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #f88;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+
+    .lds-ellipsis div:nth-child(1) {
+      left: 6px;
+      animation: lds-ellipsis1 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(2) {
+      left: 6px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(3) {
+      left: 26px;
+      animation: lds-ellipsis2 0.6s infinite;
+    }
+
+    .lds-ellipsis div:nth-child(4) {
+      left: 45px;
+      animation: lds-ellipsis3 0.6s infinite;
+    }
+
+    @keyframes lds-ellipsis1 {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes lds-ellipsis3 {
+      0% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(0);
+      }
+    }
+
+    @keyframes lds-ellipsis2 {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(19px, 0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar branding-below">
     <h4 class="h4-sample">Add sample</h4>
     <div class="add-sample">
-    <select id="sample">
-    <option value="TF">True or false</option>
-    <option value="TFF">True or false with feedback</option>
-    <option value="MC">Multiple choices</option>
-    <option value="MCMA">Multiple choices multiple good answer</option>
-    <option value="NMS">Numerical question with validation</option>
-    <option value="NM">Numerical question</option>
-    <option value="ES">Essay</option>
-    <option value="DESC">Description</option>
-    </select>
-    <button id="add-sample">Add</button>
+      <select id="sample">
+        <option value="DESC">Description (Title text with help)</option>
+        <option value="TF">True or false</option>
+        <option value="TFF">True or false with feedback</option>
+        <option value="SA">Short answer</option>
+        <option value="MC">Multiple choice</option>
+        <option value="MCMA">Multiple choice, several correct answers</option>
+        <option value="MATCH">Matching</option>
+        <option value="NMS">Numerical question with validation</option>
+        <option value="NM">Numerical question</option>
+        <option value="ES">Essay</option>
+      </select>
+      <button id="add-sample">Add</button>
     </div>
-      <form>
+    <form>
       <textarea id="gift-code" rows="4" cols="50"><?= giftCode ?></textarea>
-        
-        <div class="block" id="button-bar">
-          <!--button class="action" id="validate-gift">Validate</button-->
-          <button class="create" id="create-gift">Create form</button>
-          <button id="append-gift">Append</button>
-          <div id="loading"><div></div><div></div><div></div><div></div></div>
+
+      <div class="block" id="button-bar">
+        <!--button class="action" id="validate-gift">Validate</button-->
+        <button class="create" id="create-gift">Create form</button>
+        <button id="append-gift">Append</button>
+        <div id="loading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-        
-      </form>
-    </div>
-    
-    <div class="sidebar bottom">
-      <img alt="Add-on logo" class="logo" width="25"
-          src="https://lh5.googleusercontent.com/Fy-JGdShtnvP3dC2kTbqBPu6b-hzZgJAp25wnBEnc6JkGdlomvqxQkYSMdLqDyx--oQliwRVuA=w16383">
-      <span class="gray branding-text">GIFT Quiz Editor by fuhrmanator</span>
-    </div>
-    
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<?!= HtmlService.createHtmlOutputFromFile('gift-parser-globalsJS').getContent(); ?>  
-<?!= HtmlService.createHtmlOutputFromFile('SidebarJS').getContent(); ?>  
+      </div>
+
+    </form>
+  </div>
+
+  <div class="sidebar bottom">
+    <img alt="Add-on logo" class="logo" width="25"
+      src="https://lh5.googleusercontent.com/Fy-JGdShtnvP3dC2kTbqBPu6b-hzZgJAp25wnBEnc6JkGdlomvqxQkYSMdLqDyx--oQliwRVuA=w16383">
+    <span class="gray branding-text">GIFT Quiz Editor by fuhrmanator</span>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <?!= HtmlService.createHtmlOutputFromFile('gift-parser-globalsJS').getContent(); ?>
+  <?!= HtmlService.createHtmlOutputFromFile('SidebarJS').getContent(); ?>
 
 </body>
+
 </html>

@@ -27,6 +27,7 @@ var giftCode;
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
+  form.setIsQuiz(true);  // TODO ask user before doing this?
   FormApp.getUi()
       .createAddonMenu()
       .addItem('Open editor', 'showSidebar')
@@ -44,7 +45,6 @@ function onOpen(e) {
  *     AuthMode.NONE).
  */
 function onInstall(e) {
-  form.setIsQuiz(true);  // TODO ask user before doing this?
   onOpen(e);
 }
 

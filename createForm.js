@@ -43,7 +43,8 @@ function createForm(str, append) {
 function addQuestion(form, question) {
 
   var giftTitle = (question.title ? question.title // + " - " + question.stem.text
-    : "");
+    :
+    "");
   var stemText = stripHTML(question.stem.text);
   var item;
   switch (question.type) {
@@ -64,7 +65,7 @@ function addQuestion(form, question) {
       // Add feedback
       if (question.correctFeedback) {
         var correctFeedback = FormApp.createFeedback()
-          .setText(stripHTML(question.correctFeedback.text))  // clear HTML formatting
+          .setText(stripHTML(question.correctFeedback.text)) // clear HTML formatting
           .build();
         item.setFeedbackForCorrect(correctFeedback);
       }
@@ -142,7 +143,8 @@ function addQuestion(form, question) {
     case "Matching":
       // API won't allow configuring choices as of 2018-07-19 even though the GUI will (Answer Key)
       item = form.addGridItem();
-      var rows = [], cols = [];
+      var rows = [],
+        cols = [];
       var choiceString = "";
       // collect rows and columns
       for (var j = 0; j < question.matchPairs.length; j++) {
@@ -163,7 +165,9 @@ function addQuestion(form, question) {
       // API won't allow choices as of 2018-07-19 even though the GUI will (Answer Key)
       item = form.addTextItem().setTitle(stemText);
       var choiceString = "";
-      for (var i = 0; i < question.choices.length; i++) { choiceString += question.choices[i].text.text + ', \n'; }
+      for (var i = 0; i < question.choices.length; i++) {
+        choiceString += question.choices[i].text.text + ', \n';
+      }
       item.setHelpText("Note: this SHORT ANSWER question did not completely import from GIFT because Google's API doesn't allow creating the accepted answers in the Answer Key. You can do it manually by adding the following answers:\n" + choiceString);
       item.setPoints(1);
       // TODO support feedback for specific answers?

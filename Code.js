@@ -12,7 +12,7 @@
  * A global constant String holding the title of the add-on. This is
  * used to identify the add-on in the notification emails.
  */
-var ADDON_TITLE = 'GIFT Quiz Editor'; 
+var ADDON_TITLE = 'GIFT Quiz Editor';
 var defaultGiftSourceText = "The sun sets in the east. {False}";
 
 /**
@@ -23,12 +23,12 @@ var defaultGiftSourceText = "The sun sets in the east. {False}";
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
-  FormApp.getActiveForm().setIsQuiz(true);  // TODO ask user before doing this?
   FormApp.getUi()
-      .createAddonMenu()
-      .addItem('Open editor', 'showSidebar')
-      .addItem('About', 'showAbout')
-      .addToUi();
+    .createAddonMenu()
+    .addItem('Open editor', 'showSidebar')
+    .addItem('About', 'showAbout')
+    .addToUi();
+  FormApp.getActiveForm().setIsQuiz(true); // TODO ask user before doing this?
 }
 
 /**
@@ -50,7 +50,7 @@ function onInstall(e) {
  */
 function showSidebar() {
   var giftSourceText = PropertiesService.getDocumentProperties().getProperty(FormApp.getActiveForm().getId());
-  if(!giftSourceText) {
+  if (!giftSourceText) {
     giftSourceText = defaultGiftSourceText;
   }
   var html = HtmlService.createTemplateFromFile('Sidebar');
@@ -61,10 +61,7 @@ function showSidebar() {
 
 function showAbout() {
   var ui = HtmlService.createHtmlOutputFromFile('About')
-//      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-      .setWidth(420)
-      .setHeight(270);
+    .setWidth(420)
+    .setHeight(270);
   FormApp.getUi().showModalDialog(ui, 'About GIFT Quiz Editor');
 }
-
-

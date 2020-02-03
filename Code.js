@@ -13,11 +13,7 @@
  * used to identify the add-on in the notification emails.
  */
 var ADDON_TITLE = 'GIFT Quiz Editor'; 
-var defaultGiftCode = "The sun sets in the east. {False}";
-
-var documentProperties = PropertiesService.getDocumentProperties();
-var form = FormApp.getActiveForm();
-var giftCode;
+var defaultGiftSourceText = "The sun sets in the east. {False}";
 
 /**
  * Adds a custom menu to the active form to show the add-on sidebar.
@@ -27,7 +23,7 @@ var giftCode;
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
-  form.setIsQuiz(true);  // TODO ask user before doing this?
+  FormApp.getActiveForm().setIsQuiz(true);  // TODO ask user before doing this?
   FormApp.getUi()
       .createAddonMenu()
       .addItem('Open editor', 'showSidebar')
@@ -53,12 +49,12 @@ function onInstall(e) {
  * configuring the notifications this add-on will produce.
  */
 function showSidebar() {
-  giftCode = documentProperties.getProperty(form.getId());
-  if(!giftCode) {
-    giftCode = defaultGiftCode;
+  var giftSourceText = PropertiesService.getDocumentProperties().getProperty(FormApp.getActiveForm().getId());
+  if(!giftSourceText) {
+    giftSourceText = defaultGiftSourceText;
   }
   var html = HtmlService.createTemplateFromFile('Sidebar');
-  html.giftCode = giftCode;
+  html.giftSourceText = giftSourceText;
   var htmlOutput = html.evaluate().setTitle(ADDON_TITLE);
   FormApp.getUi().showSidebar(htmlOutput);
 }

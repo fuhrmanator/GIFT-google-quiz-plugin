@@ -1,4 +1,5 @@
 function createForm(str, append) {
+  var form = FormApp.getActiveForm();
   try {
     var giftObj = giftParser.parse(str);
   } catch (err) {
@@ -28,7 +29,7 @@ function createForm(str, append) {
       throw err;
     }
   }
-  documentProperties.setProperty(form.getId(), str);
+  PropertiesService.getDocumentProperties().setProperty(form.getId(), str);
   // Clear all questions in the form
   if (!append) {
     form.getItems().forEach(function (entry) {

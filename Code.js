@@ -28,7 +28,6 @@ function onOpen(e) {
     .addItem('Open editor', 'showSidebar')
     .addItem('About', 'showAbout')
     .addToUi();
-  FormApp.getActiveForm().setIsQuiz(true); // TODO ask user before doing this?
 }
 
 /**
@@ -49,6 +48,7 @@ function onInstall(e) {
  * configuring the notifications this add-on will produce.
  */
 function showSidebar() {
+  FormApp.getActiveForm().setIsQuiz(true); // TODO ask user before doing this?
   var giftSourceText = PropertiesService.getDocumentProperties().getProperty(FormApp.getActiveForm().getId());
   if (!giftSourceText) {
     giftSourceText = defaultGiftSourceText;

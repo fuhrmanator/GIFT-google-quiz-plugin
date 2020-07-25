@@ -29,13 +29,7 @@
             $('#gift-code').val($('#gift-code').val() + '\n\n' + sampleMap[chosenSampleKey] + '\n\n');
         });
         $('#create-gift').click(function (event) {
-            $('#error').remove();
-            showAlert("info", "Processing GIFT...");
-            $('#create-gift').prop('disabled', true);
-            $('#append-gift').prop('disabled', true);
-            $('#loading').addClass(LOADING_CLASS_CSS);
-            event.preventDefault();
-            event.stopPropagation();
+            serverSidePreflight(event);
             google.script.run
                 .withSuccessHandler(
                     function (msg, element) {
@@ -43,7 +37,7 @@
                         $('#append-gift').prop('disabled', false);
                         $('#error').remove();
                         $('#loading').removeClass(LOADING_CLASS_CSS);
-                        showAlert("success", "Form successfully created.");
+                        showAlert("success", msg);
                     })
                 .withFailureHandler(
                     function (err, element) {
@@ -53,17 +47,11 @@
                         $('#loading').removeClass(LOADING_CLASS_CSS);
                         showAlert("error", err.message);
                     })
-                .withUserObject(this)
+                .withUserObject(this)  // pass the button object (?)
                 .createForm($('#gift-code').val(), false); // don't append
         });
         $('#append-gift').click(function (event) {
-            $('#error').remove();
-            showAlert("info", "Processing GIFT...");
-            $('#create-gift').prop('disabled', true);
-            $('#append-gift').prop('disabled', true);
-            $('#loading').addClass(LOADING_CLASS_CSS);
-            event.preventDefault();
-            event.stopPropagation();
+            serverSidePreflight(event);
             google.script.run
                 .withSuccessHandler(
                     function (msg, element) {
@@ -71,7 +59,7 @@
                         $('#append-gift').prop('disabled', false);
                         $('#error').remove();
                         $('#loading').removeClass(LOADING_CLASS_CSS);
-                        showAlert("success", "Form successfully created.");
+                        showAlert("success", msg);
                     })
                 .withFailureHandler(
                     function (msg, element) {
@@ -98,7 +86,7 @@
         }
         var div = $('<div id="error" class="' + msgClass + '">' + msg + '</div>');
         $(element).after(div);
-        console.log("ShowAlert: " + msgClass + " " + msg);
+        //console.log("ShowAlert: " + msgClass + " " + msg);
     }
 
     var typingTimer;
@@ -152,5 +140,13 @@
         return "Line " + parseInt(err.location.start.line) + ", column " + parseInt(err.location.start.column) +
             " near:<b> " + badGIFT + "</b><br> " + err.message;
 
+    }
+
+    function serverSidePreflight(event) {
+        $('#error').remove();
+            showAlert("info", "Processing GIFT...");
+            $('#create-gift').prop('disabled', true);
+            $('#append-gift').prop('disabled', true);
+            $('#loading').addClass(LOADING_CLASS_CSS);
     }
 </script>

@@ -1,5 +1,11 @@
 function createForm(str, append) {
   var form = FormApp.getActiveForm();
+  if (!append) {
+    if (!confirmOverwrite()) {
+      throw new Error("Replace was not approved by user.");
+    }
+  }
+
   try {
     var giftObj = giftParser.parse(str);
   } catch (err) {
@@ -30,15 +36,20 @@ function createForm(str, append) {
     }
   }
   PropertiesService.getDocumentProperties().setProperty(form.getId(), str);
+  var resultMessage = '';
   // Clear all questions in the form
   if (!append) {
     form.getItems().forEach(function (entry) {
       form.deleteItem(entry);
     });
+    resultMessage = 'Replaced form with ';
+  } else {
+    resultMessage = 'Appended form with ';
   }
   for (var i = 0; i < giftObj.length; i++) {
     addQuestion(form, giftObj[i]);
   }
+  return resultMessage + i + " question" + (i > 1 ? 's' : '');
 }
 
 function addQuestion(form, question) {
@@ -211,4 +222,13 @@ function add(set, item) {
 
 function stripHTML(str) {
   return str.replace(/<(?:.|\n)*?>/gm, '');
+}
+
+function confirmOverwrite() {
+  var ui = FormApp.getUi();
+  var result = ui.alert(
+     'DELETE ALL QUESTIONS IN CURRENT FORM',
+     'Are you sure you want to replace (overwrite) all the questions in the current form?',
+      ui.ButtonSet.YES_NO);
+  return (result == ui.Button.YES);
 }

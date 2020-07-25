@@ -12,35 +12,31 @@
  * A global constant String holding the title of the add-on. This is
  * used to identify the add-on in the notification emails.
  */
-var ADDON_TITLE = 'GIFT Quiz Editor'; 
+var ADDON_TITLE = 'GIFT Quiz Editor';
+var defaultGiftSourceText = "The sun sets in the east. {False}";
 
-var documentProperties = PropertiesService.getDocumentProperties();
-var form = FormApp.getActiveForm();
-var giftCode = "True or false?{T}";
 /**
  * Adds a custom menu to the active form to show the add-on sidebar.
  *
- * @param {object} e The event parameter for a simple onOpen trigger. To
- *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
+ * @param {object} e The event parameter for a simple onOpen trig-ger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trig-ger is
  *     running in, inspect e.authMode.
  */
 function onOpen(e) {
-//  var authInfo = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL);
-  form.setIsQuiz(true);
   FormApp.getUi()
-      .createAddonMenu()
-      .addItem('Create/Edit GIFT', 'showSidebar')
-      .addItem('About', 'showAbout')
-      .addToUi();
+    .createAddonMenu()
+    .addItem('Open editor', 'showSidebar')
+    .addItem('About', 'showAbout')
+    .addToUi();
 }
 
 /**
  * Runs when the add-on is installed.
  *
- * @param {object} e The event parameter for a simple onInstall trigger. To
- *     determine which authorization mode (ScriptApp.AuthMode) the trigger is
- *     running in, inspect e.authMode. (In practice, onInstall triggers always
- *     run in AuthMode.FULL, but onOpen triggers may be AuthMode.LIMITED or
+ * @param {object} e The event parameter for a simple onInstall trig-ger. To
+ *     determine which authorization mode (ScriptApp.AuthMode) the trig-ger is
+ *     running in, inspect e.authMode. (In practice, onInstall trig-gers always
+ *     run in AuthMode.FULL, but onOpen trig-gers may be AuthMode.LIMITED or
  *     AuthMode.NONE).
  */
 function onInstall(e) {
@@ -52,22 +48,20 @@ function onInstall(e) {
  * configuring the notifications this add-on will produce.
  */
 function showSidebar() {
-  giftCode = documentProperties.getProperty(form.getId());
-  if(!giftCode) {
-    giftCode = "True or false?{T}";
+  FormApp.getActiveForm().setIsQuiz(true); // TODO ask user before doing this?
+  var giftSourceText = PropertiesService.getDocumentProperties().getProperty(FormApp.getActiveForm().getId());
+  if (!giftSourceText) {
+    giftSourceText = defaultGiftSourceText;
   }
   var html = HtmlService.createTemplateFromFile('Sidebar');
-  html.giftCode = giftCode;
+  html.giftSourceText = giftSourceText;
   var htmlOutput = html.evaluate().setTitle(ADDON_TITLE);
   FormApp.getUi().showSidebar(htmlOutput);
 }
 
 function showAbout() {
   var ui = HtmlService.createHtmlOutputFromFile('About')
-      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-      .setWidth(420)
-      .setHeight(270);
+    .setWidth(420)
+    .setHeight(270);
   FormApp.getUi().showModalDialog(ui, 'About GIFT Quiz Editor');
 }
-
-

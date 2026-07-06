@@ -29,6 +29,16 @@
             $('#gift-code').val($('#gift-code').val() + '\n\n' + sampleMap[chosenSampleKey] + '\n\n');
         });
         $('#create-gift').click(function (event) {
+            event.preventDefault();
+            $('#confirm-modal').show();
+            $('#modal-confirm-btn').trigger('focus');
+        });
+        $('#modal-cancel-btn').click(function () {
+            $('#confirm-modal').hide();
+            $('#create-gift').trigger('focus');
+        });
+        $('#modal-confirm-btn').click(function (event) {
+            $('#confirm-modal').hide();
             serverSidePreflight(event);
             google.script.run
                 .withSuccessHandler(
@@ -47,7 +57,7 @@
                         $('#loading').removeClass(LOADING_CLASS_CSS);
                         showAlert("error", err.message);
                     })
-                .withUserObject(this)  // pass the button object (?)
+                .withUserObject($('#create-gift')[0])  // pass the button object
                 .createForm($('#gift-code').val(), false); // don't append
         });
         $('#append-gift').click(function (event) {

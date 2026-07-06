@@ -1,6 +1,13 @@
 {
   "timeZone": "America/New_York",
-  "dependencies": {
-  },
-  "exceptionLogging": "STACKDRIVER"
+  "dependencies": {},
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "addOns": {
+    "common": {
+      "name": "GIFT Quiz Editor",
+      "logoUrl": "https://ssl.gstatic.com/docs/script/images/logo/script-64.png",
+      "useLocaleFromApp": true
+    }
+  }
 }

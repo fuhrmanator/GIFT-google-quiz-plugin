@@ -1,10 +1,5 @@
 function createForm(str, append) {
   var form = FormApp.getActiveForm();
-  if (!append) {
-    if (!confirmOverwrite()) {
-      throw new Error("Replace was not approved by user.");
-    }
-  }
 
   try {
     var giftObj = giftParser.parse(str);
@@ -222,13 +217,4 @@ function add(set, item) {
 
 function stripHTML(str) {
   return str.replace(/<(?:.|\n)*?>/gm, '');
-}
-
-function confirmOverwrite() {
-  var ui = FormApp.getUi();
-  var result = ui.alert(
-     'DELETE ALL QUESTIONS IN CURRENT FORM',
-     'Are you sure you want to replace (overwrite) all the questions in the current form?',
-      ui.ButtonSet.YES_NO);
-  return (result == ui.Button.YES);
 }

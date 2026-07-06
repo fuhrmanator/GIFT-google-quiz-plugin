@@ -1,0 +1,38 @@
+{
+  "name": "gift-google-quiz-plugin",
+  "version": "1.0.1",
+  "description": "A Google Forms add-on/extension to edit and import quizzes using the GIFT syntax.",
+  "main": "Code.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "login": "clasp login",
+    "logout": "clasp logout",
+    "pull": "clasp pull",
+    "push": "clasp push",
+    "watch": "clasp push --watch",
+    "deploy": "clasp deploy",
+    "open": "clasp open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuhrmanator/GIFT-google-quiz-plugin.git"
+  },
+  "keywords": [
+    "google-forms",
+    "google-apps-script",
+    "gift-syntax",
+    "clasp"
+  ],
+  "author": "Jonathan G.V.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/fuhrmanator/GIFT-google-quiz-plugin/issues"
+  },
+  "homepage": "https://github.com/fuhrmanator/GIFT-google-quiz-plugin#readme",
+  "devDependencies": {
+    "@google/clasp": "^2.5.0",
+    "@types/google-apps-script": "^1.0.83"
+  }
+}

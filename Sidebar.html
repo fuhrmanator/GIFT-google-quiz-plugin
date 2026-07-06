@@ -222,10 +222,10 @@
   </div>
 
   <!-- Custom Modal for Confirmation -->
-  <div id="confirm-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" aria-describedby="confirm-modal-desc" tabindex="-1" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
     <div style="background-color: #fff; margin: 35% auto; padding: 20px; border: 1px solid #ccc; width: 85%; box-sizing: border-box; border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
-      <h2 style="margin-top: 0; font-size: 15px; font-weight: bold; color: #333;">Replace form?</h2>
-      <p style="margin: 12px 0 24px 0; font-size: 13px; color: #666; line-height: 1.4;">Are you sure you want to replace (overwrite) all the questions in the current form?</p>
+      <h2 id="confirm-modal-title" style="margin-top: 0; font-size: 15px; font-weight: bold; color: #333;">Replace form?</h2>
+      <p id="confirm-modal-desc" style="margin: 12px 0 24px 0; font-size: 13px; color: #666; line-height: 1.4;">Are you sure you want to replace (overwrite) all the questions in the current form?</p>
       <div style="text-align: right;">
         <button id="modal-cancel-btn" type="button" style="margin-right: 8px;">Cancel</button>
         <button id="modal-confirm-btn" type="button" class="create">Yes, Replace</button>

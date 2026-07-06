@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A Google Forms add-on/extension to edit and import quizzes using the GIFT syntax.",
   "main": "Code.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "login": "clasp login",
     "logout": "clasp logout",

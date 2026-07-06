@@ -1,6 +1,6 @@
 {
   "name": "gift-google-quiz-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Google Forms add-on/extension to edit and import quizzes using the GIFT syntax.",
   "main": "Code.js",
   "engines": {

@@ -31,9 +31,11 @@
         $('#create-gift').click(function (event) {
             event.preventDefault();
             $('#confirm-modal').show();
+            $('#modal-confirm-btn').trigger('focus');
         });
         $('#modal-cancel-btn').click(function () {
             $('#confirm-modal').hide();
+            $('#create-gift').trigger('focus');
         });
         $('#modal-confirm-btn').click(function (event) {
             $('#confirm-modal').hide();

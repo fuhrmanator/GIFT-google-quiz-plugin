@@ -64,7 +64,7 @@
       width: 100%;
       box-sizing: border-box;
       -webkit-box-sizing: border-box;
-      ‌-moz-box-sizing: border-box;
+      -moz-box-sizing: border-box;
     }
 
     .add-sample {
@@ -217,8 +217,20 @@
 
   <div class="sidebar bottom">
     <img alt="Add-on logo" class="logo" width="25"
-      src="https://drive.google.com/uc?id=1T5Ul-xMkromAOx_cKAoEofZ7D8QxTj7L">
+      src="https://raw.githubusercontent.com/fuhrmanator/GIFT-google-quiz-plugin/refs/heads/master/gift-google-add-on.png">
     <span class="gray branding-text">GIFT Quiz Editor by fuhrmanator</span>
+  </div>
+
+  <!-- Custom Modal for Confirmation -->
+  <div id="confirm-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div style="background-color: #fff; margin: 35% auto; padding: 20px; border: 1px solid #ccc; width: 85%; box-sizing: border-box; border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+      <h2 style="margin-top: 0; font-size: 15px; font-weight: bold; color: #333;">Replace form?</h2>
+      <p style="margin: 12px 0 24px 0; font-size: 13px; color: #666; line-height: 1.4;">Are you sure you want to replace (overwrite) all the questions in the current form?</p>
+      <div style="text-align: right;">
+        <button id="modal-cancel-btn" type="button" style="margin-right: 8px;">Cancel</button>
+        <button id="modal-confirm-btn" type="button" class="create">Yes, Replace</button>
+      </div>
+    </div>
   </div>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

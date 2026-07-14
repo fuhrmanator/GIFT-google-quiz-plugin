@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/fuhrmanator/GIFT-google-quiz-plugin#readme",
   "devDependencies": {
-    "@google/clasp": "^2.5.0",
+    "@google/clasp": "^3.3.0",
     "@types/google-apps-script": "^1.0.83"
   }
 }
